@@ -1,0 +1,17 @@
+<resources>
+    <string name="app_name">MyContactList</string>
+
+    <!-- Toolbar -->
+    <string name="save">Save</string>
+    <string name="toggle_on">ON</string>
+    <string name="toggle_off">OFF</string>
+
+    <!-- Nav content descriptions -->
+    <string name="button_list_desc">Button to display a list of contacts.</string>
+    <string name="button_map_desc">Button to display a map of contacts.</string>
+    <string name="button_settings_desc">Button to display settings.</string>
+
+    <!-- Birthday dialog -->
+    <string name="cancel">Cancel</string>
+    <string name="select">Select</string>
+</resources>
