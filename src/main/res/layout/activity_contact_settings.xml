@@ -96,7 +96,6 @@
             android:text="Descending" />
     </RadioGroup>
 
-    <!-- NAV BAR (paste your nav bar here if your book wants it on every screen) -->
-    <!-- If you're already copying the nav bar into each layout, keep that same block below. -->
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
