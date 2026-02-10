@@ -134,11 +134,9 @@ public class ContactDataSource {
                 cursor.moveToNext();
             }
             cursor.close();
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             contactNames = new ArrayList<String>();
         }
+        return contactNames;
     }
-    return contactNames;
-
 }
