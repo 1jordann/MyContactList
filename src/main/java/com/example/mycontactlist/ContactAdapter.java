@@ -53,7 +53,7 @@ public class ContactAdapter extends RecyclerView.Adapter {
 
         View v = LayoutInflater
                 .from(parent.getContext())
-                .inflate(R.layout.simple_view_item, parent, false);
+                .inflate(R.layout.list_item, parent, false);
 
         return new ContactViewHolder(v);
     }
@@ -73,4 +73,5 @@ public class ContactAdapter extends RecyclerView.Adapter {
     public int getItemCount() {
         return contactData.size();
     }
+
 }
