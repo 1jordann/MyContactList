@@ -13,8 +13,6 @@ import java.util.ArrayList;
 
 public class ContactListActivity extends AppCompatActivity {
 
-    ArrayList<Contact> contacts;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -28,7 +26,8 @@ public class ContactListActivity extends AppCompatActivity {
             ds.close();
 
             RecyclerView contactList = findViewById(R.id.rvContacts);
-            RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
+            RecyclerView.LayoutManager layoutManager =
+                    new LinearLayoutManager(this);
             contactList.setLayoutManager(layoutManager);
 
             ContactAdapter contactAdapter = new ContactAdapter(contacts);
@@ -40,10 +39,13 @@ public class ContactListActivity extends AppCompatActivity {
         }
     }
 
+    private ArrayList<Contact> contacts;
+
     private View.OnClickListener onItemClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
-            RecyclerView.ViewHolder viewHolder = (RecyclerView.ViewHolder) view.getTag();
+            RecyclerView.ViewHolder viewHolder =
+                    (RecyclerView.ViewHolder) view.getTag();
             int position = viewHolder.getAdapterPosition();
 
             int contactID = contacts.get(position).getContactID();
