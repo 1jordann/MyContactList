@@ -11,9 +11,6 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.mycontactlist.Contact;
-import com.example.mycontactlist.ContactDataSource;
-
 import java.util.ArrayList;
 
 public class ContactAdapter extends RecyclerView.Adapter {
@@ -54,7 +51,7 @@ public class ContactAdapter extends RecyclerView.Adapter {
     }
 
     // BOOK STYLE constructor (one parameter)
-    public ContactAdapter(ArrayList<Contact> arrayList) {
+    public ContactAdapter(ArrayList<Contact> arrayList, Context context) {
         contactData = arrayList;
         isDeleting = false;
     }
