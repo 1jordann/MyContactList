@@ -26,6 +26,8 @@ public class ContactListActivity extends AppCompatActivity {
 
         initAddContactButton();
 
+        
+
         ContactDataSource ds = new ContactDataSource(this);
 
         try {
