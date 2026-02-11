@@ -19,7 +19,6 @@ public class ContactListActivity extends AppCompatActivity {
     ArrayList<Contact> contacts;
     ContactAdapter contactAdapter;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,11 +40,12 @@ public class ContactListActivity extends AppCompatActivity {
             contactAdapter = new ContactAdapter(contacts);
             contactAdapter.setOnItemClickListener(onItemClickListener);
             contactList.setAdapter(contactAdapter);
-            initDeleteSwitch();
 
         } catch (Exception e) {
             Toast.makeText(this, "Error retrieving contacts", Toast.LENGTH_LONG).show();
         }
+
+
         initDeleteSwitch();
     }
 
@@ -74,17 +74,17 @@ public class ContactListActivity extends AppCompatActivity {
             }
         });
     }
+
     private void initDeleteSwitch() {
         Switch s = findViewById(R.id.switchDelete);
         s.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
-            public void OnCheckedChanged (CompoundButton compoundButton, boolean b) {
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 Boolean status = compoundButton.isChecked();
-                contactAdapter.setDelete(status);;
+                contactAdapter.setDelete(status);
                 contactAdapter.notifyDataSetChanged();
             }
         });
     }
-
 }
 
