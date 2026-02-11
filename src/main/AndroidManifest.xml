@@ -12,12 +12,12 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MyContactList">
 
-        <!-- SETTINGS -->
+
         <activity
             android:name=".ContactSettingsActivity"
             android:exported="false" />
 
-        <!-- ✅ THIS IS NOW THE DEFAULT SCREEN (LIKE THE BOOK) -->
+
         <activity
             android:name=".ContactListActivity"
             android:exported="true">
@@ -29,7 +29,7 @@
 
         </activity>
 
-        <!-- CONTACT EDIT / NEW SCREEN -->
+
         <activity
             android:name=".MainActivity"
             android:exported="false" />
