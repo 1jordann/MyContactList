@@ -31,6 +31,8 @@ public class MainActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        currentContact = new Contact();
+
         Bundle extras = getIntent().getExtras();
         if (extras !=null){
             int contactID = extras.getInt("contactID");
