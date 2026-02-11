@@ -141,7 +141,7 @@ public class ContactDataSource {
     public ArrayList<Contact> getContacts(String sortField, String sortOrder) {
         ArrayList<Contact> contacts = new ArrayList<Contact>();
         try {
-            String query = "SELECT * FROM contact ORDER BY" + sortField + " " + sortOrder;
+            String query = "SELECT * FROM contact ORDER BY " + sortField + " " + sortOrder;
             Cursor cursor = database.rawQuery(query, null);
 
             Contact newContact;
@@ -172,6 +172,8 @@ public class ContactDataSource {
 
     public Contact getSpecificContact(int contactId) {
         Contact contact = new Contact();
+        try {
+
         String query = "SELECT * FROM contact WHERE _id =" + contactId;
         Cursor cursor = database.rawQuery(query, null);
 
@@ -188,10 +190,16 @@ public class ContactDataSource {
             Calendar calendar = Calendar.getInstance();
             calendar.setTimeInMillis(Long.valueOf(cursor.getString(9)));
             contact.setBirthday(calendar);
-
-            cursor.close();
-
         }
+
+        cursor.close();
+    } catch(
+    Exception e)
+
+    {
+        contact = new Contact();
+    }
+
         return contact;
     }
     public boolean deleteContact(int contactId){
