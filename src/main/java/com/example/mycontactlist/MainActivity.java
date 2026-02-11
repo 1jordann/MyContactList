@@ -31,6 +31,12 @@ public class MainActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        Bundle extras = getIntent().getExtras();
+        if (extras !=null){
+            int contactID = extras.getInt("contactID");
+            initContact(contactID);
+        }
+
 
         initListButton();
         initMapButton();
@@ -44,14 +50,8 @@ public class MainActivity extends AppCompatActivity
         // attach TextWatchers so typing updates currentContact
         initTextChangedEvents();
 
-        Bundle extras = getIntent().getExtras();
-        if(extras != null){
-            initContact(extras.getInt("contactid"));
-        }
-        else{
-            currentContact = new Contact();
-        }
         setForEditing(false);
+
     }
 
 
@@ -61,7 +61,9 @@ public class MainActivity extends AppCompatActivity
         ibList.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //code it later
+                Intent intent = new Intent(MainActivity.this, ContactListActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
             }
         });
     }
