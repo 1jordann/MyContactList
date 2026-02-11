@@ -172,4 +172,9 @@ public class ContactDataSource {
         }
         return contacts;
     }
+    public Contact getSpecifcContact(int contactId) {
+        Contact contact = new Contact();
+        String query = "SELECT * FROM contact WHERE _id =" + contactID;
+        Cursor cursor = database.rawQuery(query,null);
+    }
 }
