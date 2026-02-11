@@ -11,6 +11,9 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.mycontactlist.Contact;
+import com.example.mycontactlist.ContactDataSource;
+
 import java.util.ArrayList;
 
 public class ContactAdapter extends RecyclerView.Adapter {
@@ -50,9 +53,10 @@ public class ContactAdapter extends RecyclerView.Adapter {
         }
     }
 
-    public ContactAdapter(ArrayList<Contact> arrayList, Context context) {
+    // BOOK STYLE constructor (one parameter)
+    public ContactAdapter(ArrayList<Contact> arrayList) {
         contactData = arrayList;
-        parentContext = context;
+        isDeleting = false;
     }
 
     public void setOnItemClickListener(View.OnClickListener itemClickListener) {
@@ -61,7 +65,10 @@ public class ContactAdapter extends RecyclerView.Adapter {
 
     @NonNull
     @Override
-    public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public RecyclerView.ViewHolder onCreateViewHolder(
+            @NonNull ViewGroup parent, int viewType) {
+
+        parentContext = parent.getContext();
 
         View v = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.list_item, parent, false);
@@ -70,12 +77,14 @@ public class ContactAdapter extends RecyclerView.Adapter {
     }
 
     @Override
-    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, final int position) {
+    public void onBindViewHolder(
+            @NonNull RecyclerView.ViewHolder holder, final int position) {
 
         ContactViewHolder cvh = (ContactViewHolder) holder;
 
         cvh.getContactTextView().setText(contactData.get(position).getContactName());
         cvh.getPhoneTextView().setText(contactData.get(position).getPhoneNumber());
+
         if (isDeleting) {
             cvh.getDeleteButton().setVisibility(View.VISIBLE);
             cvh.getDeleteButton().setOnClickListener(new View.OnClickListener() {
@@ -101,19 +110,18 @@ public class ContactAdapter extends RecyclerView.Adapter {
             ds.open();
             boolean didDelete = ds.deleteContact(contact.getContactID());
             ds.close();
+
             if (didDelete) {
                 contactData.remove(position);
                 notifyDataSetChanged();
             } else {
                 Toast.makeText(parentContext, "Delete Failed", Toast.LENGTH_LONG).show();
             }
+
         } catch (Exception e) {
             Toast.makeText(parentContext, "Delete Failed", Toast.LENGTH_LONG).show();
         }
     }
-
-
-
 
     @Override
     public int getItemCount() {
