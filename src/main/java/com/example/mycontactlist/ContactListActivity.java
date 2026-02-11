@@ -19,7 +19,6 @@ public class ContactListActivity extends AppCompatActivity {
 
     ArrayList<Contact> contacts;
     ContactAdapter contactAdapter;
-    RecyclerView contactList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,7 +26,6 @@ public class ContactListActivity extends AppCompatActivity {
         setContentView(R.layout.activity_contact_list);
 
         initAddContactButton();
-        initDeleteSwitch();   // book says call in onCreate
     }
 
     @Override
@@ -49,15 +47,16 @@ public class ContactListActivity extends AppCompatActivity {
 
             if (contacts.size() > 0) {
 
-                contactList = findViewById(R.id.rvContacts);
-                RecyclerView.LayoutManager layoutManager =
-                        new LinearLayoutManager(this);
+                RecyclerView contactList = findViewById(R.id.rvContacts);
+                RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
                 contactList.setLayoutManager(layoutManager);
 
-                // BOOK WAY: two arguments (contacts, context)
+
                 contactAdapter = new ContactAdapter(contacts, this);
                 contactAdapter.setOnItemClickListener(onItemClickListener);
                 contactList.setAdapter(contactAdapter);
+
+                initDeleteSwitch();
 
             } else {
                 Intent intent = new Intent(ContactListActivity.this, MainActivity.class);
@@ -68,21 +67,6 @@ public class ContactListActivity extends AppCompatActivity {
             Toast.makeText(this, "Error retrieving contacts", Toast.LENGTH_LONG).show();
         }
     }
-
-    private View.OnClickListener onItemClickListener = new View.OnClickListener() {
-        @Override
-        public void onClick(View view) {
-            RecyclerView.ViewHolder viewHolder =
-                    (RecyclerView.ViewHolder) view.getTag();
-
-            int position = viewHolder.getAdapterPosition();
-            int contactID = contacts.get(position).getContactID();
-
-            Intent intent = new Intent(ContactListActivity.this, MainActivity.class);
-            intent.putExtra("contactID", contactID);
-            startActivity(intent);
-        }
-    };
 
     private void initAddContactButton() {
         Button newContact = findViewById(R.id.buttonAddContact);
@@ -101,12 +85,24 @@ public class ContactListActivity extends AppCompatActivity {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 Boolean status = compoundButton.isChecked();
-
-                if (contactAdapter != null) {
-                    contactAdapter.setDelete(status);
-                    contactAdapter.notifyDataSetChanged();
-                }
+                contactAdapter.setDelete(status);
+                contactAdapter.notifyDataSetChanged();
             }
         });
     }
+
+    private View.OnClickListener onItemClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            RecyclerView.ViewHolder viewHolder =
+                    (RecyclerView.ViewHolder) view.getTag();
+            int position = viewHolder.getAdapterPosition();
+
+            int contactID = contacts.get(position).getContactID();
+
+            Intent intent = new Intent(ContactListActivity.this, MainActivity.class);
+            intent.putExtra("contactID", contactID);
+            startActivity(intent);
+        }
+    };
 }
