@@ -3,6 +3,7 @@ package com.example.mycontactlist;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -26,8 +27,7 @@ public class ContactListActivity extends AppCompatActivity {
             ds.close();
 
             RecyclerView contactList = findViewById(R.id.rvContacts);
-            RecyclerView.LayoutManager layoutManager =
-                    new LinearLayoutManager(this);
+            RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
             contactList.setLayoutManager(layoutManager);
 
             ContactAdapter contactAdapter = new ContactAdapter(contacts);
@@ -54,4 +54,15 @@ public class ContactListActivity extends AppCompatActivity {
             startActivity(intent);
         }
     };
+    private void initAddContactButton() {
+        Button newContact = findViewById(R.id.buttonAddContact);
+        newContact.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(ContactListActivity.this, MainActivity.class);
+                startActivity(intent);
+
+            }
+        });
+    }
 }
