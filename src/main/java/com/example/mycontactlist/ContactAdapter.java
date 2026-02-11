@@ -50,7 +50,7 @@ public class ContactAdapter extends RecyclerView.Adapter {
         }
     }
 
-    // BOOK STYLE constructor (one parameter)
+
     public ContactAdapter(ArrayList<Contact> arrayList, Context context) {
         contactData = arrayList;
         isDeleting = false;
