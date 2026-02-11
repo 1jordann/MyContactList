@@ -7,11 +7,13 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.text.format.DateFormat;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.ToggleButton;
 
 import java.text.SimpleDateFormat;
@@ -45,7 +47,6 @@ public class MainActivity extends AppCompatActivity
 
         setForEditing(false);
     }
-
 
 
     private void initListButton() {
@@ -130,14 +131,12 @@ public class MainActivity extends AppCompatActivity
                             int newId = ds.getLastContactID();
                             currentContact.setContactID(newId);
                         }
-                    }
-                    else {
+                    } else {
                         wasSuccessful = ds.updateContact(currentContact);
                     }
 
                     ds.close();
-                }
-                catch (Exception e) {
+                } catch (Exception e) {
                     wasSuccessful = false;
                 }
 
@@ -149,7 +148,6 @@ public class MainActivity extends AppCompatActivity
             }
         });
     }
-
 
 
     private void initTextChangedEvents() {
@@ -326,7 +324,6 @@ public class MainActivity extends AppCompatActivity
     }
 
 
-
     @Override
     public void didFinishDatePickerDialog(Calendar selectedTime) {
         currentContact.setBirthday(selectedTime);
@@ -336,5 +333,40 @@ public class MainActivity extends AppCompatActivity
 
         TextView tvBirthday = findViewById(R.id.textBirthday);
         tvBirthday.setText(dateString);
+    }
+
+    private void initContact(int id) {
+
+        ContactDataSource ds = new ContactDataSource(MainActivity.this);
+
+        try {
+            ds.open();
+            currentContact = ds.getSpecificContact(id);
+            ds.close();
+        } catch (Exception e) {
+            Toast.makeText(this, "Load Contact Failed", Toast.LENGTH_LONG).show();
+        }
+
+        EditText editName = findViewById(R.id.editName);
+        EditText editAddress = findViewById(R.id.editAddress);
+        EditText editCity = findViewById(R.id.editCity);
+        EditText editState = findViewById(R.id.editState);
+        EditText editZipCode = findViewById(R.id.editZipCode);
+        EditText editPhone = findViewById(R.id.editHome);
+        EditText editCell = findViewById(R.id.editCell);
+        EditText editEmail = findViewById(R.id.editEMail);
+        TextView birthDay = findViewById(R.id.textBirthday);
+
+        editName.setText(currentContact.getContactName());
+        editAddress.setText(currentContact.getStreetAddress());
+        editCity.setText(currentContact.getCity());
+        editState.setText(currentContact.getState());
+        editZipCode.setText(currentContact.getZipCode());
+
+        editPhone.setText(currentContact.getPhoneNumber());
+        editCell.setText(currentContact.getCellNumber());
+        editEmail.setText(currentContact.getEmail());
+
+        birthDay.setText(DateFormat.format("MM/dd/yyyy",currentContact.getBirthday().getTimeInMillis()).toString());
     }
 }
