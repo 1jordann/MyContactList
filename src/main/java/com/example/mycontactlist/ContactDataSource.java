@@ -52,8 +52,7 @@ public class ContactDataSource {
                     null,
                     initialValues) > 0;
 
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             didSucceed = false;
         }
 
@@ -89,8 +88,7 @@ public class ContactDataSource {
                     "_id=" + rowId,
                     null) > 0;
 
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             didSucceed = false;
         }
 
@@ -110,20 +108,19 @@ public class ContactDataSource {
 
             if (cursor.moveToFirst()) {
                 lastId = cursor.getInt(0);
-            }
-            else {
+            } else {
                 lastId = -1;
             }
 
             cursor.close();
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             lastId = -1;
         }
 
         return lastId;
     }
-    public ArrayList<String> getContactName () {
+
+    public ArrayList<String> getContactName() {
         ArrayList<String> contactNames = new ArrayList<>();
         try {
             String query = "Select contactname from contact";
@@ -141,40 +138,60 @@ public class ContactDataSource {
         return contactNames;
     }
 
-    public ArrayList<Contact> getContacts(){
+    public ArrayList<Contact> getContacts() {
         ArrayList<Contact> contacts = new ArrayList<Contact>();
-        try{
+        try {
             String query = "Select * From contact";
-            Cursor cursor = database.rawQuery(query,null);
+            Cursor cursor = database.rawQuery(query, null);
 
             Contact newContact;
             cursor.moveToFirst();
-            while (!cursor.isAfterLast()){
-                newContact = new Contact ();
-                newContact.setContactID (cursor.getInt (0));
-                newContact.setContactName (cursor. getString (1));
-                newContact. setStreetAddress (cursor. getString (2)) ;
-                newContact.setCity (cursor.getString (3));
-                newContact.setState (cursor.getString (4));
-                newContact. setZipCode (cursor.getString (5));
-                newContact.setPhoneNumber (cursor.getString(6));
-                newContact.setCellNumber (cursor.getString (7));
-                newContact.setEmail (cursor.getString (8));
-                Calendar calendar = Calendar.getInstance ();
-                calendar.setTimeInMillis (Long. valueOf (cursor.getString (9)));
-                newContact.setBirthday (calendar); contacts. add (newContact) ;
-                cursor.moveToNext () ;
+            while (!cursor.isAfterLast()) {
+                newContact = new Contact();
+                newContact.setContactID(cursor.getInt(0));
+                newContact.setContactName(cursor.getString(1));
+                newContact.setStreetAddress(cursor.getString(2));
+                newContact.setCity(cursor.getString(3));
+                newContact.setState(cursor.getString(4));
+                newContact.setZipCode(cursor.getString(5));
+                newContact.setPhoneNumber(cursor.getString(6));
+                newContact.setCellNumber(cursor.getString(7));
+                newContact.setEmail(cursor.getString(8));
+                Calendar calendar = Calendar.getInstance();
+                calendar.setTimeInMillis(Long.valueOf(cursor.getString(9)));
+                newContact.setBirthday(calendar);
+                contacts.add(newContact);
+                cursor.moveToNext();
             }
             cursor.close();
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             contacts = new ArrayList<Contact>();
         }
         return contacts;
     }
-    public Contact getSpecifcContact(int contactId) {
+
+    public Contact getSpecificContact(int contactId) {
         Contact contact = new Contact();
-        String query = "SELECT * FROM contact WHERE _id =" + contactID;
-        Cursor cursor = database.rawQuery(query,null);
+        String query = "SELECT * FROM contact WHERE _id =" + contactId;
+        Cursor cursor = database.rawQuery(query, null);
+
+        if (cursor.moveToFirst()) {
+            contact.setContactID(cursor.getInt(0));
+            contact.setContactName(cursor.getString(1));
+            contact.setStreetAddress(cursor.getString(2));
+            contact.setCity(cursor.getString(3));
+            contact.setState(cursor.getString(4));
+            contact.setZipCode(cursor.getString(5));
+            contact.setPhoneNumber(cursor.getString(6));
+            contact.setCellNumber(cursor.getString(7));
+            contact.setEmail(cursor.getString(8));
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTimeInMillis(Long.valueOf(cursor.getString(9)));
+            contact.setBirthday(calendar);
+
+            cursor.close();
+
+        }
+        return contact;
     }
 }
