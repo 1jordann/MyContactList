@@ -1,6 +1,9 @@
 <resources>
     <color name="navbar_background">#1A237E</color>
     <color name="toolbar_background">#bebebe</color>
+    <color name="system_red">#ff0000</color>
+    <color name="system_transparent">#00000000</color>
+    <color name="system_blue">#0000ff</color>
 
     <color name="dialog_button_color">#1A237E</color>
 </resources>

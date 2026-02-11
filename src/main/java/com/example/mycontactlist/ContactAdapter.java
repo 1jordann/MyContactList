@@ -11,15 +11,22 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
 
 public class ContactAdapter extends RecyclerView.Adapter {
+
     private ArrayList<String> contactData;
     private View.OnClickListener mOnItemClickListener;
 
+
     public class ContactViewHolder extends RecyclerView.ViewHolder {
+
         public TextView textViewContact;
 
         public ContactViewHolder(@NonNull View itemView) {
             super(itemView);
+
             textViewContact = itemView.findViewById(R.id.textViewName);
+
+            itemView.setTag(this);
+            itemView.setOnClickListener(mOnItemClickListener);
         }
 
         public TextView getContactTextView() {
@@ -27,26 +34,43 @@ public class ContactAdapter extends RecyclerView.Adapter {
         }
     }
 
-    public ContactAdapter(ArrayList<String> arraylist) {
-        contactData = arraylist;
+
+    public ContactAdapter(ArrayList<String> arrayList) {
+        contactData = arrayList;
     }
+
+
+    public void setOnItemClickListener(View.OnClickListener itemClickListener) {
+        mOnItemClickListener = itemClickListener;
+    }
+
 
     @NonNull
     @Override
-    public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.simple_view_item, parent, false);
+    public RecyclerView.ViewHolder onCreateViewHolder(
+            @NonNull ViewGroup parent,
+            int viewType) {
+
+        View v = LayoutInflater
+                .from(parent.getContext())
+                .inflate(R.layout.simple_view_item, parent, false);
+
         return new ContactViewHolder(v);
     }
 
+
     @Override
-    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
+    public void onBindViewHolder(
+            @NonNull RecyclerView.ViewHolder holder,
+            int position) {
+
         ContactViewHolder cvh = (ContactViewHolder) holder;
         cvh.getContactTextView().setText(contactData.get(position));
     }
 
+
     @Override
     public int getItemCount() {
         return contactData.size();
-
     }
 }
