@@ -40,7 +40,6 @@ public class ContactListActivity extends AppCompatActivity {
     }
 
     private ArrayList<Contact> contacts;
-
     private View.OnClickListener onItemClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View view) {

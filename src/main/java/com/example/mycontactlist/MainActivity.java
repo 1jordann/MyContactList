@@ -48,11 +48,9 @@ public class MainActivity extends AppCompatActivity
         if(extras != null){
             initContact(extras.getInt("contactid"));
         }
-
         else{
             currentContact = new Contact();
         }
-
         setForEditing(false);
     }
 
