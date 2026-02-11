@@ -13,38 +13,44 @@ import java.util.ArrayList;
 
 public class ContactListActivity extends AppCompatActivity {
 
+    ArrayList<Contact> contacts;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_contact_list);
 
         ContactDataSource ds = new ContactDataSource(this);
-        ArrayList<String> names;
 
         try {
             ds.open();
-            names = ds.getContactName();
+            contacts = ds.getContacts();
             ds.close();
 
             RecyclerView contactList = findViewById(R.id.rvContacts);
             RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
             contactList.setLayoutManager(layoutManager);
 
-            ContactAdapter contactAdapter = new ContactAdapter(names);
+            ContactAdapter contactAdapter = new ContactAdapter(contacts);
+            contactAdapter.setOnItemClickListener(onItemClickListener);
             contactList.setAdapter(contactAdapter);
-        }
-        catch (Exception e) {
+
+        } catch (Exception e) {
             Toast.makeText(this, "Error retrieving contacts", Toast.LENGTH_LONG).show();
         }
     }
+
     private View.OnClickListener onItemClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
             RecyclerView.ViewHolder viewHolder = (RecyclerView.ViewHolder) view.getTag();
             int position = viewHolder.getAdapterPosition();
+
+            int contactID = contacts.get(position).getContactID();
+
             Intent intent = new Intent(ContactListActivity.this, MainActivity.class);
+            intent.putExtra("contactID", contactID);
             startActivity(intent);
         }
     };
-
 }
