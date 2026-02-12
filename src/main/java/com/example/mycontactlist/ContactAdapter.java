@@ -53,7 +53,7 @@ public class ContactAdapter extends RecyclerView.Adapter {
 
     public ContactAdapter(ArrayList<Contact> arrayList, Context context) {
         contactData = arrayList;
-        isDeleting = false;
+        parentContext = context;
     }
 
     public void setOnItemClickListener(View.OnClickListener itemClickListener) {
@@ -78,10 +78,8 @@ public class ContactAdapter extends RecyclerView.Adapter {
             @NonNull RecyclerView.ViewHolder holder, final int position) {
 
         ContactViewHolder cvh = (ContactViewHolder) holder;
-
         cvh.getContactTextView().setText(contactData.get(position).getContactName());
         cvh.getPhoneTextView().setText(contactData.get(position).getPhoneNumber());
-
         if (isDeleting) {
             cvh.getDeleteButton().setVisibility(View.VISIBLE);
             cvh.getDeleteButton().setOnClickListener(new View.OnClickListener() {
@@ -90,7 +88,8 @@ public class ContactAdapter extends RecyclerView.Adapter {
                     deleteItem(position);
                 }
             });
-        } else {
+        }
+        else {
             cvh.getDeleteButton().setVisibility(View.INVISIBLE);
         }
     }
@@ -102,7 +101,6 @@ public class ContactAdapter extends RecyclerView.Adapter {
     private void deleteItem(int position) {
         Contact contact = contactData.get(position);
         ContactDataSource ds = new ContactDataSource(parentContext);
-
         try {
             ds.open();
             boolean didDelete = ds.deleteContact(contact.getContactID());
