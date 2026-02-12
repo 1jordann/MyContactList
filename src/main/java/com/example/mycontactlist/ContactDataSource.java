@@ -204,8 +204,8 @@ public class ContactDataSource {
     }
     public boolean deleteContact(int contactId){
         boolean didDelete = false;
-        try{
-            didDelete = database.delete("contact", "_id" + contactId, null)> 0;
+        try {
+            didDelete = database.delete("contact", "_id=" + contactId, null) > 0;
         }
         catch (Exception e) {
             //Do nothing -return value already set to false
