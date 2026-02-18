@@ -64,7 +64,7 @@ public class ContactMapActivity extends AppCompatActivity {
                                             public void onClick(View view) {
                                                 ActivityCompat.requestPermissions(
                                                         ContactMapActivity.this,
-                                                        new String[] {
+                                                        new String[]{
                                                                 android.Manifest.permission.ACCESS_FINE_LOCATION
                                                         },
                                                         PERMISSION_REQUEST_LOCATION);
@@ -74,7 +74,7 @@ public class ContactMapActivity extends AppCompatActivity {
 
                             } else {
                                 ActivityCompat.requestPermissions(ContactMapActivity.this,
-                                        new String[] { android.Manifest.permission.ACCESS_FINE_LOCATION },
+                                        new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION},
                                         PERMISSION_REQUEST_LOCATION);
                             }
 
@@ -102,8 +102,7 @@ public class ContactMapActivity extends AppCompatActivity {
             if (locationManager != null && gpsListener != null) {
                 locationManager.removeUpdates(gpsListener);
             }
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -139,23 +138,38 @@ public class ContactMapActivity extends AppCompatActivity {
                 }
 
                 @Override
-                public void onStatusChanged(String provider, int status, Bundle extras) {}
+                public void onStatusChanged(String provider, int status, Bundle extras) {
+                }
 
                 @Override
-                public void onProviderEnabled(String provider) {}
+                public void onProviderEnabled(String provider) {
+                }
 
                 @Override
-                public void onProviderDisabled(String provider) {}
+                public void onProviderDisabled(String provider) {
+                }
             };
 
             locationManager.requestLocationUpdates(
                     LocationManager.GPS_PROVIDER, 0, 0, gpsListener);
 
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             Toast.makeText(getBaseContext(),
                     "Error, Location not available",
                     Toast.LENGTH_LONG).show();
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
+        switch (requestCode) {
+            case PERMISSION_REQUEST_LOCATION: {
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    startLocationUpdates();
+                } else {
+                    Toast.makeText(ContactMapActivity.this, "MyContactList will not locate your contacts.", Toast.LENGTH_LONG).show();
+                }
+            }
         }
     }
 }
