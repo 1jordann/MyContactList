@@ -42,7 +42,6 @@ dependencies {
     implementation(libs.design)
     implementation(libs.play.services)
     implementation(libs.multidex)
-    implementation(libs.androidx.multidex)
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
