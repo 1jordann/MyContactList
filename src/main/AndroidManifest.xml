@@ -3,6 +3,14 @@
     xmlns:tools="http://schemas.android.com/tools">
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    <permission
+        android:name="com.example.mycontact.list.permission.MAPS_RECEIVE"
+        android:protectionLevel="signature" />
+    <uses-permission
+        android:name="com.example.mycontact.list.permission.MAPS_RECEIVE" />
+    <uses-permission android:name="android.permission. INTERNET" />
+    <uses-permission android:name="android.permission. ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission. WRITE EXTERNAL STORAGE" />
 
     <application
         android:allowBackup="true"
@@ -35,6 +43,13 @@
         <activity
             android:name=".MainActivity"
             android:exported="false" />
+
+        <meta-data
+            android:name="com.google.android.maps.v2.API_KEY"
+            android:value="AIzaSyC0hDfOtWg50ZPRDVhrJ5nJ7PmL9FbJfw4" />
+        <uses-library
+            android:name="org.apache.http.legacy"
+            android:require="false" />
 
     </application>
 
