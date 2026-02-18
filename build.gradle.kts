@@ -14,10 +14,9 @@ android {
         targetSdk = 36
         versionCode = 1
         versionName = "1.0"
-        multiDexEnabled
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-
+        multiDexEnabled = true
     }
 
     buildTypes {
@@ -43,6 +42,7 @@ dependencies {
     implementation(libs.design)
     implementation(libs.play.services)
     implementation(libs.multidex)
+    implementation(libs.androidx.multidex)
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
