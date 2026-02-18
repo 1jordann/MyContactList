@@ -76,7 +76,8 @@ public class MainActivity extends AppCompatActivity
         ibMap.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //code it later
+                Intent intent = new Intent(MainActivity.this, ContactMapActivity.class);
+                startActivity(intent);
             }
         });
     }
@@ -118,6 +119,7 @@ public class MainActivity extends AppCompatActivity
             }
         });
     }
+
 
     // for da SAVE BUTTON
 
@@ -380,3 +382,4 @@ public class MainActivity extends AppCompatActivity
         birthDay.setText(DateFormat.format("MM/dd/yyyy",currentContact.getBirthday().getTimeInMillis()).toString());
     }
 }
+
