@@ -42,6 +42,7 @@ dependencies {
     implementation(libs.design)
     implementation(libs.play.services)
     implementation(libs.multidex)
+    implementation(libs.play.services.maps)
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)

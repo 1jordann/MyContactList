@@ -14,7 +14,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toTopOf="@+id/navBar"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"/>
 
     <RadioGroup
         android:id="@+id/radioGroupMapType"
@@ -40,12 +40,52 @@
 
     </RadioGroup>
 
+    <!-- LIST BUTTON -->
+    <ImageButton
+        android:id="@+id/imageButtonList"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:src="@drawable/contactlisticon"
+        android:contentDescription="List"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        app:layout_constraintBottom_toTopOf="@id/navBar"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginStart="16dp"
+        android:layout_marginBottom="8dp"/>
+
+    <!-- MAP BUTTON (current screen — disabled in Java) -->
+
+    <!-- SETTINGS BUTTON -->
+    <ImageButton
+        android:id="@+id/imageButtonMap"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_marginStart="116dp"
+        android:layout_marginBottom="8dp"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:contentDescription="Map"
+        android:src="@drawable/mapicon"
+        app:layout_constraintBottom_toTopOf="@id/navBar"
+        app:layout_constraintStart_toEndOf="@id/imageButtonList"/>
+
+    <ImageButton
+        android:id="@+id/imageButtonSettings"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:src="@drawable/settingicon"
+        android:contentDescription="Settings"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        app:layout_constraintBottom_toTopOf="@id/navBar"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="8dp"/>
+
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/navBar"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
