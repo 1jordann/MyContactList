@@ -240,9 +240,9 @@ public class ContactMapActivity extends AppCompatActivity implements OnMapReadyC
                 alertDialog.setTitle("No Data");
                 alertDialog.setMessage("No data is available for the mapping function.");
                 alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, "OK", new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int which) {
-                                finish();
-                            } });
+                    public void onClick(DialogInterface dialog, int which) {
+                        finish();
+                    } });
                 alertDialog.show();
             }
         }
@@ -255,12 +255,12 @@ public class ContactMapActivity extends AppCompatActivity implements OnMapReadyC
                     if (ActivityCompat.shouldShowRequestPermissionRationale(ContactMapActivity.this, android.Manifest.permission.ACCESS_FINE_LOCATION)) {
 
                         Snackbar.make(findViewById(R.id.activity_contact_map), "MyContactList requires this permission to locate " + "your contacts", Snackbar.LENGTH_INDEFINITE).setAction("OK", new View.OnClickListener() {
-                            @Override
-                            public void onClick(View view) {
+                                    @Override
+                                    public void onClick(View view) {
 
-                                ActivityCompat.requestPermissions(ContactMapActivity.this, new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION},PERMISSION_REQUEST_LOCATION);
-                            }
-                        })
+                                        ActivityCompat.requestPermissions(ContactMapActivity.this, new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION},PERMISSION_REQUEST_LOCATION);
+                                    }
+                                })
                                 .show();
 
                     } else {

@@ -16,7 +16,7 @@ android {
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-        multiDexEnabled = true
+
     }
 
     buildTypes {
@@ -41,7 +41,6 @@ dependencies {
     implementation(libs.constraintlayout)
     implementation(libs.design)
     implementation(libs.play.services)
-    implementation(libs.play.services.maps)
     implementation(libs.multidex)
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
