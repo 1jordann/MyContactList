@@ -22,7 +22,8 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MyContactList">
 
-
+        <activity android:name=".ContactMapActivity"
+            android:exported="false" />
         <activity
             android:name=".ContactSettingsActivity"
             android:exported="false" />
@@ -45,7 +46,7 @@
 
         <meta-data
             android:name="com.google.android.maps.v2.API_KEY"
-            android:value="AIzaSyC0hDfOtWg50ZPRDVhrJ5nJ7PmL9FbJfw4" />
+            android:value="AIzaSyC0hDfOtWg50ZPRDVhrJ5nJ7PmL9FbJfw4"/>
         <uses-library
             android:name="org.apache.http.legacy"
             android:required="false" />

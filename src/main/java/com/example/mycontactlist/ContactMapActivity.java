@@ -76,9 +76,7 @@ public class ContactMapActivity extends AppCompatActivity implements OnMapReadyC
 
         }
 
-        initListButton();
-        initMapButton();
-        initSettingsButton();
+
         initMapTypeButtons();
 
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
@@ -88,33 +86,6 @@ public class ContactMapActivity extends AppCompatActivity implements OnMapReadyC
         createLocationRequest();
         createLocationCallback();
 
-    }
-
-    private void initListButton() {
-        ImageButton ibList = findViewById(R.id.imageButtonList);
-        ibList.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View view) {
-                Intent intent = new Intent(ContactMapActivity.this, ContactListActivity.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                startActivity(intent);
-            }
-        });
-    }
-
-    private void initMapButton() {
-        ImageButton ibList = findViewById(R.id.imageButtonMap);
-        ibList.setEnabled(false);
-    }
-
-    private void initSettingsButton() {
-        ImageButton ibList = findViewById(R.id.imageButtonSettings);
-        ibList.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View view) {
-                Intent intent = new Intent(ContactMapActivity.this, ContactSettingsActivity.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                startActivity(intent);
-            }
-        });
     }
 
     private void createLocationRequest() {
@@ -161,7 +132,7 @@ public class ContactMapActivity extends AppCompatActivity implements OnMapReadyC
         rgMapType.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
 
             @Override
-            public void onCheckedChanged(RadioGroup arg0, int arg1) {
+            public void onCheckedChanged(RadioGroup radioGroup, int i) {
                 RadioButton rbNormal = findViewById(R.id.radioButtonNormal);
                 if (rbNormal.isChecked()) {
                     gMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
@@ -230,10 +201,16 @@ public class ContactMapActivity extends AppCompatActivity implements OnMapReadyC
                 catch (IOException e) {
                     e.printStackTrace();
                 }
-                LatLng point = new LatLng(addresses.get(0).getLatitude(),addresses.get(0).getLongitude());
+               // LatLng point = new LatLng(addresses.get(0).getLatitude(),addresses.get(0).getLongitude());
+
+                LatLng point = new LatLng(10,10);
 
                 gMap.addMarker(new MarkerOptions().position(point).title(currentContact.getContactName()).snippet(address));
                 gMap.animateCamera(CameraUpdateFactory. newLatLngZoom(point, 16));
+
+
+
+
             }
             else {
                 AlertDialog alertDialog = new AlertDialog.Builder(ContactMapActivity.this).create();
