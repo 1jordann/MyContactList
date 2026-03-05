@@ -388,5 +388,26 @@ public class MainActivity extends AppCompatActivity
 
         birthDay.setText(DateFormat.format("MM/dd/yyyy",currentContact.getBirthday().getTimeInMillis()).toString());
     }
+    private void initCallFunction(){
+        EditText editPhone = (EditText) findViewById(R.id.editHome);
+        editPhone.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View arg0) {
+                checkPhonePermission(currentContact.getPhoneNumber());
+                return false;
+            }
+        });
+        EditText editCell = (EditText) findViewById(R.id.editCell);
+        editCell.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View arg0) {
+                checkPhonePermission(currentContact.getCellNumber());
+                return false;
+            }
+        });
+
+
+    }
+
 }
 
