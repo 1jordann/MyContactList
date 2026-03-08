@@ -6,8 +6,10 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentManager;
 
+import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -34,7 +36,11 @@ public class MainActivity extends AppCompatActivity
 
 
     private Contact currentContact;
-    final int Permission_REQUEST_PHONE = 102;
+    final int PERMISSION_REQUEST_PHONE = 102;
+    final int PERMISSION_REQUEST_CAMERA = 103;
+    final int CAMERA_REQUEST = 1888;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,7 +50,7 @@ public class MainActivity extends AppCompatActivity
         currentContact = new Contact();
 
         Bundle extras = getIntent().getExtras();
-        if (extras !=null){
+        if (extras != null) {
             int contactID = extras.getInt("contactID");
             initContact(contactID);
         }
@@ -56,7 +62,7 @@ public class MainActivity extends AppCompatActivity
         initToggleButton();
         initChangeDateButton();
         initCallFunction();
-
+        initImageButton();
 
 
         initSaveButton();
@@ -90,10 +96,9 @@ public class MainActivity extends AppCompatActivity
             public void onClick(View view) {
                 Intent intent = new Intent(MainActivity.this, ContactMapActivity.class);
                 if (currentContact.getContactID() == 1) {
-                    Toast.makeText(getBaseContext(), "Contact must be saved before it can be mapped",Toast.LENGTH_LONG).show();
-                }
-                else {
-                    intent.putExtra("contactid",currentContact.getContactID());
+                    Toast.makeText(getBaseContext(), "Contact must be saved before it can be mapped", Toast.LENGTH_LONG).show();
+                } else {
+                    intent.putExtra("contactid", currentContact.getContactID());
                 }
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
@@ -347,6 +352,9 @@ public class MainActivity extends AppCompatActivity
 
         buttonChange.setEnabled(enabled);
         buttonSave.setEnabled(enabled);
+        ImageButton picture = findViewById(R.id.imageContact);
+        picture.setEnabled(enabled);
+
 
         if (enabled) {
             editName.requestFocus();
@@ -402,9 +410,10 @@ public class MainActivity extends AppCompatActivity
         editCell.setText(currentContact.getCellNumber());
         editEmail.setText(currentContact.getEmail());
 
-        birthDay.setText(DateFormat.format("MM/dd/yyyy",currentContact.getBirthday().getTimeInMillis()).toString());
+        birthDay.setText(DateFormat.format("MM/dd/yyyy", currentContact.getBirthday().getTimeInMillis()).toString());
     }
-    private void initCallFunction(){
+
+    private void initCallFunction() {
         EditText editPhone = (EditText) findViewById(R.id.editHome);
         editPhone.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
@@ -424,7 +433,8 @@ public class MainActivity extends AppCompatActivity
 
 
     }
-    private void checkPhonePermission (String phoneNumber) {
+
+    private void checkPhonePermission(String phoneNumber) {
         if (Build.VERSION.SDK_INT >= 23) {
             if (ContextCompat.checkSelfPermission(MainActivity.this, android.Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
                 if (ActivityCompat.shouldShowRequestPermissionRationale(MainActivity.this, android.Manifest.permission.CALL_PHONE)) {
@@ -438,7 +448,7 @@ public class MainActivity extends AppCompatActivity
                             })
                             .show();
                 } else {
-                    ActivityCompat.requestPermissions(MainActivity.this, new String[]{android.Manifest.permission.CALL_PHONE}, Permission_REQUEST_PHONE);
+                    ActivityCompat.requestPermissions(MainActivity.this, new String[]{android.Manifest.permission.CALL_PHONE}, PERMISSION_REQUEST_PHONE);
                 }
             } else {
                 callContact(phoneNumber);
@@ -451,19 +461,44 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String permissions[], @NonNull int[] grantResults) {
         switch (requestCode) {
-            case Permission_REQUEST_PHONE:{
+            case PERMISSION_REQUEST_PHONE: {
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                Toast.makeText(ContactActivity.this, "You may now call from this app.", Toast.LENGTH_LONG).show();
+                    Toast.makeText(MainActivity.this, "You may now call from this app.", Toast.LENGTH_LONG).show();
                 } else {
-                    Toast.makeText(ContactActivity.this, "You will not be able to make calls " + "from this app.", Toast.LENGTH_LONG).show();
+                    Toast.makeText(MainActivity.this, "You will not be able to make calls " + "from this app.", Toast.LENGTH_LONG).show();
                 }
             }
+            case PERMISSION_REQUEST_CAMERA: {
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    takePhoto();
+                } else {
+                    Toast.makeText(MainActivity.this, "You will not be able to save contact picture from this app.", Toast.LENGTH_LONG).show();
+                }
+                return;
+            }
         }
-
     }
+
+    public void takePhoto() {
+        Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+        startActivityForResult(cameraIntent, CAMERA_REQUEST);
+    }
+
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == CAMERA_REQUEST) {
+            if (resultCode == RESULT_OK) {
+                Bitmap photo = (Bitmap) data.getExtras().get("data");
+                Bitmap scaledPhoto = Bitmap.createScaledBitmap(photo, 144, 144, true);
+                ImageButton imageContact = (ImageButton) findViewById(R.id.imageContact);
+                imageContact.setImageBitmap(scaledPhoto);
+                currentContact.setPicture(scaledPhoto);
+            }
+        }
+    }
+
     private void callContact(String phoneNumber){
         Intent intent = new Intent(Intent.ACTION_CALL);
-        Intent.setData(Uri.parse("tel:" + phoneNumber));
+        intent.setData(Uri.parse("tel:" + phoneNumber));
         if ( Build.VERSION.SDK_INT >= 23 && ContextCompat.checkSelfPermission(getBaseContext(), android.Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED){
             return;
         }
@@ -471,6 +506,33 @@ public class MainActivity extends AppCompatActivity
             startActivity(intent);
         }
     }
-
+    private void initImageButton() {
+        ImageButton iB = findViewById(R.id.imageContact);
+        iB.setOnClickListener (new View.OnClickListener () {
+            public void onClick (View v) {
+                if (Build.VERSION.SDK_INT >= 23) {
+                    if (ContextCompat.checkSelfPermission(MainActivity.this, android.Manifest.permission.CAMERA) !=
+                            PackageManager.PERMISSION_GRANTED) {
+                        if (ActivityCompat.shouldShowRequestPermissionRationale(MainActivity.this, android.Manifest.permission.CAMERA)) {
+                            Snackbar.make(findViewById(R.id.activity_main), "The app needs permission to take pictures.", Snackbar.LENGTH_INDEFINITE).setAction("Ok", new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View view) {
+                                            ActivityCompat.requestPermissions(MainActivity.this, new String[]
+                                                    {android.Manifest.permission.CAMERA}, PERMISSION_REQUEST_CAMERA);
+                                        }
+                                    })
+                                    .show();
+                        } else {
+                            ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.CAMERA}, PERMISSION_REQUEST_CAMERA);
+                        }
+                    }
+                    else {
+                        takePhoto();
+                    }
+                } else {
+            takePhoto();
+        }
+            }
+        });
+    }
 }
-
