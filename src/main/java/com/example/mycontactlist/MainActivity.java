@@ -1,11 +1,18 @@
 package com.example.mycontactlist;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentManager;
 
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.text.Editable;
+import android.text.InputType;
 import android.text.TextWatcher;
 import android.text.format.DateFormat;
 import android.view.View;
@@ -16,6 +23,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 
+import com.google.android.material.snackbar.Snackbar;
+
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Locale;
@@ -25,6 +34,7 @@ public class MainActivity extends AppCompatActivity
 
 
     private Contact currentContact;
+    final int Permission_REQUEST_PHONE = 102;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +55,8 @@ public class MainActivity extends AppCompatActivity
         initSettingsButton();
         initToggleButton();
         initChangeDateButton();
+        initCallFunction();
+
 
 
         initSaveButton();
@@ -330,8 +342,7 @@ public class MainActivity extends AppCompatActivity
         editCity.setEnabled(enabled);
         editState.setEnabled(enabled);
         editZipCode.setEnabled(enabled);
-        editPhone.setEnabled(enabled);
-        editCell.setEnabled(enabled);
+
         editEmail.setEnabled(enabled);
 
         buttonChange.setEnabled(enabled);
@@ -339,6 +350,11 @@ public class MainActivity extends AppCompatActivity
 
         if (enabled) {
             editName.requestFocus();
+            editPhone.setInputType(InputType.TYPE_CLASS_PHONE);
+            editCell.setInputType(InputType.TYPE_CLASS_PHONE);
+        } else {
+            editPhone.setInputType(InputType.TYPE_NULL);
+            editCell.setInputType(InputType.TYPE_NULL);
         }
     }
 
@@ -407,6 +423,53 @@ public class MainActivity extends AppCompatActivity
         });
 
 
+    }
+    private void checkPhonePermission (String phoneNumber) {
+        if (Build.VERSION.SDK_INT >= 23) {
+            if (ContextCompat.checkSelfPermission(MainActivity.this, android.Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
+                if (ActivityCompat.shouldShowRequestPermissionRationale(MainActivity.this, android.Manifest.permission.CALL_PHONE)) {
+                    Snackbar.make(findViewById(R.id.activity_main), "MyContactList requires this permission to place a call from the app.",
+                                    Snackbar.LENGTH_INDEFINITE).setAction("OK", new View.OnClickListener() {
+                                @Override
+                                public void onClick(View view) {
+                                    ActivityCompat.requestPermissions(MainActivity.this, new String[]{android.Manifest.permission.CALL_PHONE},
+                                            PERMISSION_REQUEST_PHONE);
+                                }
+                            })
+                            .show();
+                } else {
+                    ActivityCompat.requestPermissions(MainActivity.this, new String[]{android.Manifest.permission.CALL_PHONE}, Permission_REQUEST_PHONE);
+                }
+            } else {
+                callContact(phoneNumber);
+            }
+        } else {
+            callContact(phoneNumber);
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String permissions[], @NonNull int[] grantResults) {
+        switch (requestCode) {
+            case Permission_REQUEST_PHONE:{
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                Toast.makeText(ContactActivity.this, "You may now call from this app.", Toast.LENGTH_LONG).show();
+                } else {
+                    Toast.makeText(ContactActivity.this, "You will not be able to make calls " + "from this app.", Toast.LENGTH_LONG).show();
+                }
+            }
+        }
+
+    }
+    private void callContact(String phoneNumber){
+        Intent intent = new Intent(Intent.ACTION_CALL);
+        Intent.setData(Uri.parse("tel:" + phoneNumber));
+        if ( Build.VERSION.SDK_INT >= 23 && ContextCompat.checkSelfPermission(getBaseContext(), android.Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED){
+            return;
+        }
+        else{
+            startActivity(intent);
+        }
     }
 
 }
